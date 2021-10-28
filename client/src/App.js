@@ -31,11 +31,14 @@ class App extends React.Component{
    const setData = await SimpleStorage.methods.set(this.state.input).send({from: accounts[0]})
    console.log('return: ',setData)
 
-   const Listenevent = await SimpleStorage.getPastEvents('getstoredData',(function(err,result){
+   const Listenevent = await SimpleStorage.getPastEvents('getstoredData',{},(function(err,result){
       console.log(result[0].returnValues.storedData);
-      return result[0].returnValues.storedData;
-      this.setState({instantupdate: result[0].returnValues.storedData});
-    }))
+      return result[0].returnValues.storedData; 
+      this.setState({instantupdate: result[0].returnValues.storedData});  
+    }));
+   
+   console.log(Listenevent);
+   
   }
 
   Getoutput = async(event)=> {

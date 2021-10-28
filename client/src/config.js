@@ -1,6 +1,6 @@
-export const SimpleStorageContract_Address = "0x880eC73Ac331e76288343a489C71cCcE1E7c55C1";
+export const SimpleStorageContract_Address = "0x1027115F9756c3EE75d9EdbEd32182643E821428";
 
-export const SimpleStorageContract_abi =  [
+export const SimpleStorageContract_abi = [
     {
       "anonymous": false,
       "inputs": [
