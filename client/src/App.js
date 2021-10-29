@@ -31,12 +31,18 @@ class App extends React.Component{
    const setData = await SimpleStorage.methods.set(this.state.input).send({from: accounts[0]})
    console.log('return: ',setData)
 
-   const Listenevent = await SimpleStorage.getPastEvents('getstoredData',{},(function(err,result){
-      console.log(result[0].returnValues.storedData);
-      return result[0].returnValues.storedData; 
-      this.setState({instantupdate: result[0].returnValues.storedData});  
-    }));
-   
+   const Listenevent = await SimpleStorage.getPastEvents('getstoredData',{},function john(err,result){
+    console.log(result);
+    let out = (result[0].returnValues.storedData);
+    // getCount();
+    console.log(out);
+    
+  
+   });
+   // eventExample.getPastEvents("DataStored", { fromBlock: 0 }).then((events) => console.log(events));
+   // this.setState({instantupdate: result[0].returnValues.storedData}); 
+   this.setState({instantupdate: this.out});
+   console.log(this.out);
    console.log(Listenevent);
    
   }
@@ -57,15 +63,6 @@ class App extends React.Component{
    const web3 = new Web3(Web3.givenProvider || "ws://localhost:7545"); 
    const SimpleStorage = new web3.eth.Contract(SimpleStorageContract_abi,SimpleStorageContract_Address); 
 
-   // const Listenevent = await SimpleStorage.getPastEvents('getstoredData',{});
-   // console.log(Listenevent);
-   // let getstoredDataEvents = SimpleStorage.getstoredData;
-    // const Listenevent = await SimpleStorage.getPastEvents('getstoredData',(function(err,result){
-    //   console.log(result[0].returnValues.storedData);
-    //   return result[0].returnValues.storedData;
-    //   this.setState({instantupdate: result[0].returnValues.storedData})
-    // }))
-    // this.setState({instantupdate: Listenevent});
     console.log(this.state.instantupdate);
 
   }
@@ -86,7 +83,7 @@ class App extends React.Component{
         <button type="submit" onClick={this.onSubmit}>Submit</button>
         <p>Click here to get the value: {this.state.output}</p>
         <button type='get' onClick={this.Getoutput}>Getvalue</button>
-        <h1>This is for events{this.state.instantupdate}</h1>
+        <h1>This is for events`${this.out}`{this.instantupdate}</h1>
         <button onClick = {this.ListenToEvents} >events</button>
       </div>
     ); 
