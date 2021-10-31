@@ -10,16 +10,17 @@ class App extends React.Component{
         account: '',
         input: 0,
         output: '',
-        instantupdate: 0
+        instantupdate: 0,
+        trxhash: '',
+        blockHash: []
       }
   }
-
+  
  
   
   onSubmit = async(event) =>{
   event.preventDefault();
 
-   var Web3 = require('web3');
    const web3 = new Web3(Web3.givenProvider || "ws://localhost:7545"); 
 
    const SimpleStorage = new web3.eth.Contract(SimpleStorageContract_abi,SimpleStorageContract_Address);
@@ -31,24 +32,40 @@ class App extends React.Component{
    const setData = await SimpleStorage.methods.set(this.state.input).send({from: accounts[0]})
    console.log('return: ',setData)
 
-   const Listenevent = await SimpleStorage.getPastEvents('getstoredData',{},function john(err,result){
+
+   const Listenevent = await SimpleStorage.getPastEvents('getstoredData',{
+    //  fromBlock: 0,
+    //  toBlock: 'latest'
+   },function(err,result){
     console.log(result);
-    let out = (result[0].returnValues.storedData);
-    // getCount();
-    console.log(out);
-    
   
    });
-   // eventExample.getPastEvents("DataStored", { fromBlock: 0 }).then((events) => console.log(events));
-   // this.setState({instantupdate: result[0].returnValues.storedData}); 
-   this.setState({instantupdate: this.out});
-   console.log(this.out);
    console.log(Listenevent);
-   
+   console.log(Listenevent[0].returnValues.storedData);
+   this.setState({instantupdate: Listenevent[0].returnValues.storedData});
+   this.setState({trxhash: Listenevent[0].transactionHash});
+   console.log(Listenevent[0].transactionHash);
+   console.log(this.state.instantupdate);
+
+
+  //  for (var i = 0; i < Listenevent.length; i++) {
+  //   // console.log(Listenevent[i]);
+  //     if(Listenevent[i].returnValues.storedData == "9344582248"){
+  //         console.log("Wanted: ",Listenevent[i]);
+  //         let blockhashloop = Listenevent[i].blockHash;
+  //         return blockhashloop   
+  //     }
+  //     this.setState({blockHash: this.blockhashloop})
+  //   }
+  //   console.log(this.state.blockHash); 
+  
   }
+  
+
+
 
   Getoutput = async(event)=> {
-   var Web3 = require('web3');
+   event.preventDefault();
    const web3 = new Web3(Web3.givenProvider || "ws://localhost:7545"); 
    const SimpleStorage = new web3.eth.Contract(SimpleStorageContract_abi,SimpleStorageContract_Address);
    
@@ -58,18 +75,9 @@ class App extends React.Component{
    console.log(getData);
   }
 
-  ListenToEvents = async(event)=>{
-   var Web3 = require('web3');
-   const web3 = new Web3(Web3.givenProvider || "ws://localhost:7545"); 
-   const SimpleStorage = new web3.eth.Contract(SimpleStorageContract_abi,SimpleStorageContract_Address); 
-
-    console.log(this.state.instantupdate);
-
-  }
-
   onInputChange = (event) => {
     this.setState({input: event.target.value});
-    console.log(this.state.input)
+    // console.log(this.state.input)
   }
 
   render(){
@@ -83,8 +91,9 @@ class App extends React.Component{
         <button type="submit" onClick={this.onSubmit}>Submit</button>
         <p>Click here to get the value: {this.state.output}</p>
         <button type='get' onClick={this.Getoutput}>Getvalue</button>
-        <h1>This is for events`${this.out}`{this.instantupdate}</h1>
-        <button onClick = {this.ListenToEvents} >events</button>
+        <h1>This what you typed: {this.state.instantupdate}</h1>
+        <h5>transactionHash: {this.state.trxhash}</h5>
+        {/* <button onClick = {this.ListenToEvents} >events</button> */}
       </div>
     ); 
   }

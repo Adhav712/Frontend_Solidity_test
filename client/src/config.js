@@ -1,4 +1,4 @@
-export const SimpleStorageContract_Address = "0xD761594d1494a840358ad2bEad1E4F9E2510590A";
+export const SimpleStorageContract_Address = "0xC4aB66068a8F96D3A0879aE0d87D6Fe2941593e7";
 
 export const SimpleStorageContract_abi = [
     {
